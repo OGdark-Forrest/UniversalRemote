@@ -21,7 +21,7 @@ void setup(){
   wifiManager = new wifiHandler();
   Serial.println("WiFi handler ready");
 
-  serverManager = new serverHandler(80, irManager);
+  serverManager = new serverHandler(80, irManager, serverHandler::serverState::SYNC);
   Serial.println("Server ready");
 }
 

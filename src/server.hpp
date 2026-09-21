@@ -2,6 +2,7 @@
 
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#include <WebServer.h>
 #include "secrets.hpp"
 #include "general.hpp"
 #include "irHandler.hpp"
@@ -39,15 +40,24 @@ class wifiHandler{
 
 class serverHandler{
     public:
-        serverHandler(int portNumber, irHandler* irManagerPointer);
+        enum class serverState {ASYNC, SYNC};
+        serverHandler(int portNumber, irHandler* irManagerPointer, serverState status);
     
     private:
-        AsyncWebServer serverObj;
+        AsyncWebServer asyncServerObj;
+        WebServer syncServerObj;
         irHandler& irManager;
+        serverState status;
 
         void addRoutes();
 
+        void initiateConnection(AsyncWebServerRequest* request);
         void addCommand(AsyncWebServerRequest* request);
         void addSignal(AsyncWebServerRequest* request);
         void toggleOffCloning(AsyncWebServerRequest* request);
+
+        void initiateConnection();
+        void addCommand();
+        void addSignal();
+        void toggleOffCloning();
 };
