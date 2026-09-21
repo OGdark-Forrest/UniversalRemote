@@ -1,11 +1,21 @@
 #include "server.hpp"
 
-serverHandler::serverHandler(int portNumber, irHandler* irManagerPointer):
-serverObj(portNumber), irManager(*irManagerPointer)
+enum class serverState {
+    SYNC,
+    ASYNC
+};
+
+serverHandler::serverHandler(int portNumber, irHandler* irManagerPointer, serverState state):
+asyncServerObj(portNumber), syncServerObj(portNumber),irManager(*irManagerPointer), status(state)
 {
-    (this->serverObj).begin();
-    (this->irManager.toggleCloningOn());
     this->addRoutes();
+    if(state == serverState::ASYNC){
+        (this->asyncServerObj).begin();
+    }
+    else{
+        (this->syncServerObj).begin();
+    }
+    (this->irManager.toggleCloningOn());
 }
 
 void initiateConnection(AsyncWebServerRequest* request){

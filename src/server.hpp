@@ -2,6 +2,7 @@
 
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
+#include <WebServer.h>
 #include "secrets.hpp"
 #include "general.hpp"
 #include "irHandler.hpp"
@@ -39,11 +40,13 @@ class wifiHandler{
 
 class serverHandler{
     public:
-        serverHandler(int portNumber, irHandler* irManagerPointer);
+        serverHandler(int portNumber, irHandler* irManagerPointer, serverState status);
     
     private:
-        AsyncWebServer serverObj;
+        AsyncWebServer asyncServerObj;
+        WebServer syncServerObj;
         irHandler& irManager;
+        serverState status;
 
         void addRoutes();
 
