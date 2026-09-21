@@ -40,6 +40,7 @@ class wifiHandler{
 
 class serverHandler{
     public:
+        enum class serverState {ASYNC, SYNC};
         serverHandler(int portNumber, irHandler* irManagerPointer, serverState status);
     
     private:
@@ -50,7 +51,13 @@ class serverHandler{
 
         void addRoutes();
 
+        void initiateConnection(AsyncWebServerRequest* request);
         void addCommand(AsyncWebServerRequest* request);
         void addSignal(AsyncWebServerRequest* request);
         void toggleOffCloning(AsyncWebServerRequest* request);
+
+        void initiateConnection();
+        void addCommand();
+        void addSignal();
+        void toggleOffCloning();
 };
